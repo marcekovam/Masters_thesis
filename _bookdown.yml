@@ -3,8 +3,8 @@ output_dir: docs
 #delete_merged_file: true
 #new_session: yes
 #preview: true
-#edit: https://github.com/marcekovam/My_first_bookdown/edit/main/%s
-view: https://github.com/marcekovam/My_first_bookdown/blob/main/%s
+#edit: https://github.com/marcekovam/Masters_thesis/edit/main/%s
+view: https://github.com/marcekovam/Masters_thesis/blob/main/%s
 language:
   ui:
     chapter_name: "Kapitola "
@@ -17,7 +17,7 @@ language:
     exm: "Príklad "
 rmd_files: # defines the .Rmd files to be included for each output format
   html: ["index.Rmd", 
-         "01-first.Rmd", 
-         "02-second.Rmd", 
-         "03-third.Rmd",
-         "04-fourth.Rmd"]
+         "01-aukcne_data.Rmd", 
+         "02-livebids.Rmd", 
+         "03-trans_kb.Rmd",
+         "04-prik_gauss.Rmd"]

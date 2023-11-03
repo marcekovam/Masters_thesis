@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Kapitola 2 Livebids | Bayesovské modely aukcií</title>
+  <meta name="description" content="Kapitola 2 Livebids | Bayesovské modely aukcií" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Kapitola 2 Livebids | Bayesovské modely aukcií" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Kapitola 2 Livebids | Bayesovské modely aukcií" />
+  
+  
+  
+
+<meta name="author" content="Michaela Marčeková" />
+
+
+<meta name="date" content="2023-11-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="aukčné-dáta.html"/>
+<link rel="next" href="transformácia-kosínovej-bázy.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="book.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Bayesovské modely aukcií</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Úvod</a></li>
+<li class="part"><span><b>Dáta</b></span></li>
+<li class="chapter" data-level="1" data-path="aukčné-dáta.html"><a href="aukčné-dáta.html"><i class="fa fa-check"></i><b>1</b> Aukčné dáta</a></li>
+<li class="chapter" data-level="2" data-path="livebids.html"><a href="livebids.html"><i class="fa fa-check"></i><b>2</b> Livebids</a></li>
+<li class="part"><span><b>Gaussovský proces</b></span></li>
+<li class="chapter" data-level="3" data-path="transformácia-kosínovej-bázy.html"><a href="transformácia-kosínovej-bázy.html"><i class="fa fa-check"></i><b>3</b> Transformácia kosínovej bázy</a></li>
+<li class="chapter" data-level="4" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html"><i class="fa fa-check"></i><b>4</b> Príklady gaussovských procesov</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#section"><i class="fa fa-check"></i><b>4.1</b> Section</a></li>
+<li class="chapter" data-level="4.2" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#section-1"><i class="fa fa-check"></i><b>4.2</b> Section</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#subsection"><i class="fa fa-check"></i><b>4.2.1</b> Subsection</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#section-2"><i class="fa fa-check"></i><b>4.3</b> Section</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bayesovské modely aukcií</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="livebids" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Kapitola 2</span> Livebids<a href="livebids.html#livebids" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>make.livebids</code> <a href="https://www.modelingonlineauctions.com/code">code</a></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="livebids.html#cb5-1" tabindex="-1"></a><span class="do">####################################################################</span></span>
+<span id="cb5-2"><a href="livebids.html#cb5-2" tabindex="-1"></a><span class="do">#######                                                      #######</span></span>
+<span id="cb5-3"><a href="livebids.html#cb5-3" tabindex="-1"></a><span class="do">#######       Recover the livebids from the Proxybids        #######     </span></span>
+<span id="cb5-4"><a href="livebids.html#cb5-4" tabindex="-1"></a><span class="do">#######                                                      #######</span></span>
+<span id="cb5-5"><a href="livebids.html#cb5-5" tabindex="-1"></a><span class="do">####################################################################</span></span>
+<span id="cb5-6"><a href="livebids.html#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="livebids.html#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="livebids.html#cb5-8" tabindex="-1"></a><span class="do">####################################################################</span></span>
+<span id="cb5-9"><a href="livebids.html#cb5-9" tabindex="-1"></a><span class="do">####      find the bid increment for a given auction price      ####</span></span>
+<span id="cb5-10"><a href="livebids.html#cb5-10" tabindex="-1"></a><span class="do">####################################################################</span></span>
+<span id="cb5-11"><a href="livebids.html#cb5-11" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="livebids.html#cb5-12" tabindex="-1"></a><span class="do">## function bid.incr(price)</span></span>
+<span id="cb5-13"><a href="livebids.html#cb5-13" tabindex="-1"></a>bid.incr <span class="ot">&lt;-</span> </span>
+<span id="cb5-14"><a href="livebids.html#cb5-14" tabindex="-1"></a>       <span class="cf">function</span>(price) </span>
+<span id="cb5-15"><a href="livebids.html#cb5-15" tabindex="-1"></a>           { bidint <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.99</span>,<span class="fl">4.99</span>,<span class="fl">24.99</span>,<span class="fl">99.99</span>,<span class="fl">249.99</span>,<span class="fl">499.99</span>,<span class="fl">999.99</span>,<span class="fl">2499.99</span>,<span class="fl">4999.99</span>)</span>
+<span id="cb5-16"><a href="livebids.html#cb5-16" tabindex="-1"></a>               <span class="do">## interval of prices</span></span>
+<span id="cb5-17"><a href="livebids.html#cb5-17" tabindex="-1"></a>             inc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.05</span>,<span class="fl">0.25</span>,<span class="fl">0.5</span>,<span class="dv">1</span>,<span class="fl">2.5</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">25</span>,<span class="dv">50</span>,<span class="dv">100</span>)</span>
+<span id="cb5-18"><a href="livebids.html#cb5-18" tabindex="-1"></a>               <span class="do">## increments of price for particular interval</span></span>
+<span id="cb5-19"><a href="livebids.html#cb5-19" tabindex="-1"></a>             inc[<span class="fu">findInterval</span>(price,bidint)]</span>
+<span id="cb5-20"><a href="livebids.html#cb5-20" tabindex="-1"></a>           }</span>
+<span id="cb5-21"><a href="livebids.html#cb5-21" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="livebids.html#cb5-22" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb5-23"><a href="livebids.html#cb5-23" tabindex="-1"></a><span class="do">##########            make livebids              ###########</span></span>
+<span id="cb5-24"><a href="livebids.html#cb5-24" tabindex="-1"></a><span class="do">############################################################</span></span>
+<span id="cb5-25"><a href="livebids.html#cb5-25" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="livebids.html#cb5-26" tabindex="-1"></a><span class="do">## function recover.livebids(bids,bidder,openbid,winningbid)</span></span>
+<span id="cb5-27"><a href="livebids.html#cb5-27" tabindex="-1"></a><span class="do">## This function reconstructs the sequence of livebids by </span></span>
+<span id="cb5-28"><a href="livebids.html#cb5-28" tabindex="-1"></a><span class="do">## inputing the raw bids,bidder IDs and opening bid</span></span>
+<span id="cb5-29"><a href="livebids.html#cb5-29" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="livebids.html#cb5-30" tabindex="-1"></a>recover.livebids <span class="ot">&lt;-</span> </span>
+<span id="cb5-31"><a href="livebids.html#cb5-31" tabindex="-1"></a>       <span class="cf">function</span>(bids,bidder,openbid,winningbid)</span>
+<span id="cb5-32"><a href="livebids.html#cb5-32" tabindex="-1"></a>           { nbid <span class="ot">&lt;-</span> <span class="fu">length</span>(bids)</span>
+<span id="cb5-33"><a href="livebids.html#cb5-33" tabindex="-1"></a>             <span class="cf">if</span> (nbid<span class="sc">==</span><span class="dv">1</span>) { live <span class="ot">&lt;-</span> openbid</span>
+<span id="cb5-34"><a href="livebids.html#cb5-34" tabindex="-1"></a>                            live</span>
+<span id="cb5-35"><a href="livebids.html#cb5-35" tabindex="-1"></a>                           }</span>
+<span id="cb5-36"><a href="livebids.html#cb5-36" tabindex="-1"></a>             <span class="cf">else</span> {</span>
+<span id="cb5-37"><a href="livebids.html#cb5-37" tabindex="-1"></a>                   <span class="cf">if</span> (nbid<span class="sc">==</span><span class="dv">2</span>) {live <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nbid)</span>
+<span id="cb5-38"><a href="livebids.html#cb5-38" tabindex="-1"></a>                                 live[<span class="dv">1</span>] <span class="ot">&lt;-</span> openbid</span>
+<span id="cb5-39"><a href="livebids.html#cb5-39" tabindex="-1"></a>                                 live[nbid] <span class="ot">&lt;-</span> winningbid</span>
+<span id="cb5-40"><a href="livebids.html#cb5-40" tabindex="-1"></a>                                 live}</span>
+<span id="cb5-41"><a href="livebids.html#cb5-41" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="livebids.html#cb5-42" tabindex="-1"></a>                   <span class="cf">else</span> { live <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nbid)</span>
+<span id="cb5-43"><a href="livebids.html#cb5-43" tabindex="-1"></a>                          maxbid <span class="ot">&lt;-</span> bids[<span class="dv">1</span>]</span>
+<span id="cb5-44"><a href="livebids.html#cb5-44" tabindex="-1"></a>                          live[<span class="dv">1</span>] <span class="ot">&lt;-</span> openbid</span>
+<span id="cb5-45"><a href="livebids.html#cb5-45" tabindex="-1"></a>                          live[nbid] <span class="ot">&lt;-</span> winningbid</span>
+<span id="cb5-46"><a href="livebids.html#cb5-46" tabindex="-1"></a>                          currentprice <span class="ot">&lt;-</span> bids[<span class="dv">1</span>]</span>
+<span id="cb5-47"><a href="livebids.html#cb5-47" tabindex="-1"></a>                          maxbidder <span class="ot">&lt;-</span> bidder[<span class="dv">1</span>]</span>
+<span id="cb5-48"><a href="livebids.html#cb5-48" tabindex="-1"></a>                          <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(nbid<span class="dv">-1</span>)) </span>
+<span id="cb5-49"><a href="livebids.html#cb5-49" tabindex="-1"></a>                                { newbid <span class="ot">&lt;-</span> bids[i]</span>
+<span id="cb5-50"><a href="livebids.html#cb5-50" tabindex="-1"></a>                                  newbidder <span class="ot">&lt;-</span> bidder[i]</span>
+<span id="cb5-51"><a href="livebids.html#cb5-51" tabindex="-1"></a>                                  <span class="cf">if</span> (newbid <span class="sc">&gt;</span> maxbid) { <span class="cf">if</span> (<span class="sc">!</span>(<span class="fu">identical</span>(newbidder,maxbidder))) </span>
+<span id="cb5-52"><a href="livebids.html#cb5-52" tabindex="-1"></a>                                                             { incr <span class="ot">&lt;-</span> <span class="fu">bid.incr</span>(maxbid)</span>
+<span id="cb5-53"><a href="livebids.html#cb5-53" tabindex="-1"></a>                                                               <span class="cf">if</span> (newbid <span class="sc">&lt;</span> maxbid<span class="sc">+</span>incr)  currentprice <span class="ot">&lt;-</span> newbid</span>
+<span id="cb5-54"><a href="livebids.html#cb5-54" tabindex="-1"></a>                                                               <span class="cf">else</span> currentprice <span class="ot">&lt;-</span> maxbid<span class="sc">+</span>incr</span>
+<span id="cb5-55"><a href="livebids.html#cb5-55" tabindex="-1"></a>                                                               maxbid <span class="ot">&lt;-</span> newbid         </span>
+<span id="cb5-56"><a href="livebids.html#cb5-56" tabindex="-1"></a>                                                               maxbidder <span class="ot">&lt;-</span> newbidder</span>
+<span id="cb5-57"><a href="livebids.html#cb5-57" tabindex="-1"></a>                                                              } </span>
+<span id="cb5-58"><a href="livebids.html#cb5-58" tabindex="-1"></a>                                                         <span class="cf">else</span> {maxbid <span class="ot">&lt;-</span> newbid </span>
+<span id="cb5-59"><a href="livebids.html#cb5-59" tabindex="-1"></a>                                                               maxbidder <span class="ot">&lt;-</span> maxbidder</span>
+<span id="cb5-60"><a href="livebids.html#cb5-60" tabindex="-1"></a>                                                               }</span>
+<span id="cb5-61"><a href="livebids.html#cb5-61" tabindex="-1"></a>                                                       }</span>
+<span id="cb5-62"><a href="livebids.html#cb5-62" tabindex="-1"></a>                                  <span class="cf">else</span> {<span class="cf">if</span> (newbid <span class="sc">&lt;</span> maxbid) { incr <span class="ot">&lt;-</span> <span class="fu">bid.incr</span>(newbid)</span>
+<span id="cb5-63"><a href="livebids.html#cb5-63" tabindex="-1"></a>                                                               <span class="cf">if</span> (newbid<span class="sc">+</span>incr<span class="sc">&gt;=</span>maxbid) currentprice <span class="ot">&lt;-</span> maxbid</span>
+<span id="cb5-64"><a href="livebids.html#cb5-64" tabindex="-1"></a>                                                               <span class="cf">else</span> currentprice <span class="ot">&lt;-</span> newbid<span class="sc">+</span>incr</span>
+<span id="cb5-65"><a href="livebids.html#cb5-65" tabindex="-1"></a>                                                               maxbid <span class="ot">&lt;-</span> maxbid</span>
+<span id="cb5-66"><a href="livebids.html#cb5-66" tabindex="-1"></a>                                                               maxbidder <span class="ot">&lt;-</span> maxbidder</span>
+<span id="cb5-67"><a href="livebids.html#cb5-67" tabindex="-1"></a>                                                              }</span>
+<span id="cb5-68"><a href="livebids.html#cb5-68" tabindex="-1"></a>                                         <span class="cf">else</span> { <span class="cf">if</span> (<span class="sc">!</span>(<span class="fu">identical</span>(newbidder,maxbidder))) </span>
+<span id="cb5-69"><a href="livebids.html#cb5-69" tabindex="-1"></a>                                                                            {currentprice <span class="ot">&lt;-</span> maxbid</span>
+<span id="cb5-70"><a href="livebids.html#cb5-70" tabindex="-1"></a>                                                                             maxbid <span class="ot">&lt;-</span> maxbid</span>
+<span id="cb5-71"><a href="livebids.html#cb5-71" tabindex="-1"></a>                                                                             maxbidder <span class="ot">&lt;-</span> maxbidder</span>
+<span id="cb5-72"><a href="livebids.html#cb5-72" tabindex="-1"></a>                                                                            }</span>
+<span id="cb5-73"><a href="livebids.html#cb5-73" tabindex="-1"></a>                                                <span class="cf">else</span> {currentprice <span class="ot">&lt;-</span> currentprice</span>
+<span id="cb5-74"><a href="livebids.html#cb5-74" tabindex="-1"></a>                                                      maxbid <span class="ot">&lt;-</span> maxbid</span>
+<span id="cb5-75"><a href="livebids.html#cb5-75" tabindex="-1"></a>                                                      maxbidder <span class="ot">&lt;-</span> maxbidder</span>
+<span id="cb5-76"><a href="livebids.html#cb5-76" tabindex="-1"></a>                                                      }                                              </span>
+<span id="cb5-77"><a href="livebids.html#cb5-77" tabindex="-1"></a>                                              }</span>
+<span id="cb5-78"><a href="livebids.html#cb5-78" tabindex="-1"></a>                                        }</span>
+<span id="cb5-79"><a href="livebids.html#cb5-79" tabindex="-1"></a>                                 live[i] <span class="ot">&lt;-</span> currentprice</span>
+<span id="cb5-80"><a href="livebids.html#cb5-80" tabindex="-1"></a>                               }</span>
+<span id="cb5-81"><a href="livebids.html#cb5-81" tabindex="-1"></a>                         live</span>
+<span id="cb5-82"><a href="livebids.html#cb5-82" tabindex="-1"></a>                        }</span>
+<span id="cb5-83"><a href="livebids.html#cb5-83" tabindex="-1"></a>                  }</span>
+<span id="cb5-84"><a href="livebids.html#cb5-84" tabindex="-1"></a>             }</span></code></pre></div>
+</details>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="livebids.html#cb6-1" tabindex="-1"></a>current_price <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb6-2"><a href="livebids.html#cb6-2" tabindex="-1"></a><span class="cf">for</span> (au <span class="cf">in</span> <span class="fu">unique</span>(df<span class="sc">$</span>auctionid)){</span>
+<span id="cb6-3"><a href="livebids.html#cb6-3" tabindex="-1"></a>  current_price[[<span class="fu">as.character</span>(au)]] <span class="ot">&lt;-</span> </span>
+<span id="cb6-4"><a href="livebids.html#cb6-4" tabindex="-1"></a>    <span class="fu">recover.livebids</span>(df<span class="sc">$</span>bid[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">==</span> au)],</span>
+<span id="cb6-5"><a href="livebids.html#cb6-5" tabindex="-1"></a>                   df<span class="sc">$</span>bidder[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">==</span> au)],</span>
+<span id="cb6-6"><a href="livebids.html#cb6-6" tabindex="-1"></a>                   <span class="fu">unique</span>(df<span class="sc">$</span>openbid[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">==</span> au)]),</span>
+<span id="cb6-7"><a href="livebids.html#cb6-7" tabindex="-1"></a>                   <span class="fu">unique</span>(df<span class="sc">$</span>price[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">==</span> au)]))</span>
+<span id="cb6-8"><a href="livebids.html#cb6-8" tabindex="-1"></a>}</span>
+<span id="cb6-9"><a href="livebids.html#cb6-9" tabindex="-1"></a>df_current_price <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-10"><a href="livebids.html#cb6-10" tabindex="-1"></a>  <span class="at">time =</span> df<span class="sc">$</span>bidtime,</span>
+<span id="cb6-11"><a href="livebids.html#cb6-11" tabindex="-1"></a>  <span class="at">price =</span> <span class="fu">unname</span>(<span class="fu">unlist</span>(current_price)),</span>
+<span id="cb6-12"><a href="livebids.html#cb6-12" tabindex="-1"></a>  <span class="at">auctionid =</span> <span class="fu">unname</span>(<span class="fu">unlist</span>(<span class="fu">sapply</span>(<span class="fu">names</span>(current_price), </span>
+<span id="cb6-13"><a href="livebids.html#cb6-13" tabindex="-1"></a>                                   \(k){<span class="fu">rep</span>(k, <span class="at">times =</span> <span class="fu">length</span>(current_price[[k]]))})))</span>
+<span id="cb6-14"><a href="livebids.html#cb6-14" tabindex="-1"></a>)</span>
+<span id="cb6-15"><a href="livebids.html#cb6-15" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">head</span>(df_current_price), <span class="at">style=</span><span class="st">&#39;rmarkdown&#39;</span>)</span></code></pre></div>
+</details>
+<table>
+<thead>
+<tr class="header">
+<th align="center">time</th>
+<th align="center">price</th>
+<th align="center">auctionid</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">2.927</td>
+<td align="center">95</td>
+<td align="center">8213034705</td>
+</tr>
+<tr class="even">
+<td align="center">2.943</td>
+<td align="center">96</td>
+<td align="center">8213034705</td>
+</tr>
+<tr class="odd">
+<td align="center">2.951</td>
+<td align="center">102.5</td>
+<td align="center">8213034705</td>
+</tr>
+<tr class="even">
+<td align="center">2.999</td>
+<td align="center">117.5</td>
+<td align="center">8213034705</td>
+</tr>
+<tr class="odd">
+<td align="center">0.06527</td>
+<td align="center">1</td>
+<td align="center">8213060420</td>
+</tr>
+<tr class="even">
+<td align="center">0.1232</td>
+<td align="center">2.25</td>
+<td align="center">8213060420</td>
+</tr>
+</tbody>
+</table>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="livebids.html#cb7-1" tabindex="-1"></a>df_current_price_extend <span class="ot">&lt;-</span> df_current_price</span>
+<span id="cb7-2"><a href="livebids.html#cb7-2" tabindex="-1"></a><span class="cf">for</span> (k <span class="cf">in</span> <span class="fu">unique</span>(df_current_price<span class="sc">$</span>auctionid)){</span>
+<span id="cb7-3"><a href="livebids.html#cb7-3" tabindex="-1"></a>  df_current_price_extend <span class="ot">&lt;-</span> <span class="fu">add_row</span>(df_current_price_extend, </span>
+<span id="cb7-4"><a href="livebids.html#cb7-4" tabindex="-1"></a>                                  <span class="at">time =</span> <span class="dv">0</span>,</span>
+<span id="cb7-5"><a href="livebids.html#cb7-5" tabindex="-1"></a>                                  <span class="at">price =</span> <span class="fu">min</span>(df_current_price<span class="sc">$</span>price[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">==</span> k)]),</span>
+<span id="cb7-6"><a href="livebids.html#cb7-6" tabindex="-1"></a>                                  <span class="at">auctionid =</span> k,</span>
+<span id="cb7-7"><a href="livebids.html#cb7-7" tabindex="-1"></a>                                  <span class="at">.before =</span> <span class="fu">min</span>(<span class="fu">which</span>(df_current_price_extend<span class="sc">$</span>auctionid <span class="sc">==</span> k)))</span>
+<span id="cb7-8"><a href="livebids.html#cb7-8" tabindex="-1"></a>  df_current_price_extend <span class="ot">&lt;-</span> <span class="fu">add_row</span>(df_current_price_extend, </span>
+<span id="cb7-9"><a href="livebids.html#cb7-9" tabindex="-1"></a>                                  <span class="at">time =</span> <span class="dv">3</span>,</span>
+<span id="cb7-10"><a href="livebids.html#cb7-10" tabindex="-1"></a>                                  <span class="at">price =</span> <span class="fu">max</span>(df_current_price<span class="sc">$</span>price[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">==</span> k)]),</span>
+<span id="cb7-11"><a href="livebids.html#cb7-11" tabindex="-1"></a>                                  <span class="at">auctionid =</span> k,</span>
+<span id="cb7-12"><a href="livebids.html#cb7-12" tabindex="-1"></a>                                  <span class="at">.after =</span> <span class="fu">max</span>(<span class="fu">which</span>(df_current_price_extend<span class="sc">$</span>auctionid <span class="sc">==</span> k)))</span>
+<span id="cb7-13"><a href="livebids.html#cb7-13" tabindex="-1"></a>}</span>
+<span id="cb7-14"><a href="livebids.html#cb7-14" tabindex="-1"></a>plot_auction <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-15"><a href="livebids.html#cb7-15" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="at">data =</span> df_current_price_extend[<span class="fu">which</span>(df_current_price_extend<span class="sc">$</span>auctionid <span class="sc">%in%</span> <span class="fu">unique</span>(df_current_price_extend<span class="sc">$</span>auctionid)[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">11</span>)]), ], </span>
+<span id="cb7-16"><a href="livebids.html#cb7-16" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> price, <span class="at">color =</span> <span class="fu">as.factor</span>(auctionid))) <span class="sc">+</span></span>
+<span id="cb7-17"><a href="livebids.html#cb7-17" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df[<span class="fu">which</span>(df<span class="sc">$</span>auctionid <span class="sc">%in%</span> <span class="fu">unique</span>(df<span class="sc">$</span>auctionid)[<span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">11</span>)]), ], <span class="fu">aes</span>(<span class="at">x =</span> bidtime, <span class="at">y =</span> bid, <span class="at">color =</span> <span class="fu">as.factor</span>(auctionid)), </span>
+<span id="cb7-18"><a href="livebids.html#cb7-18" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb7-19"><a href="livebids.html#cb7-19" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb7-20"><a href="livebids.html#cb7-20" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Čas ponúk [dni]&quot;</span>,</span>
+<span id="cb7-21"><a href="livebids.html#cb7-21" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Ponuky [USD]&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-22"><a href="livebids.html#cb7-22" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-23"><a href="livebids.html#cb7-23" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(gold, blue[<span class="dv">2</span>], olive))</span>
+<span id="cb7-24"><a href="livebids.html#cb7-24" tabindex="-1"></a>plot_auction</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-7-1.png" width="768" style="display: block; margin: auto;" /></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="livebids.html#cb8-1" tabindex="-1"></a>plot_auction <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb8-2"><a href="livebids.html#cb8-2" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="at">data =</span> df_current_price_extend, </span>
+<span id="cb8-3"><a href="livebids.html#cb8-3" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> price, <span class="at">color =</span> <span class="fu">as.factor</span>(auctionid))) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="livebids.html#cb8-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> df, <span class="fu">aes</span>(<span class="at">x =</span> bidtime, <span class="at">y =</span> bid, <span class="at">color =</span> <span class="fu">as.factor</span>(auctionid)), </span>
+<span id="cb8-5"><a href="livebids.html#cb8-5" tabindex="-1"></a>             <span class="at">size =</span> <span class="fl">0.7</span>) <span class="sc">+</span> </span>
+<span id="cb8-6"><a href="livebids.html#cb8-6" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb8-7"><a href="livebids.html#cb8-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Čas ponúk [dni]&quot;</span>,</span>
+<span id="cb8-8"><a href="livebids.html#cb8-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Ponuky [USD]&quot;</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="livebids.html#cb8-9" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb8-10"><a href="livebids.html#cb8-10" tabindex="-1"></a>plot_auction</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-8-1.png" width="768" style="display: block; margin: auto;" /></p>
+
+</div>
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="aukčné-dáta.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="transformácia-kosínovej-bázy.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": null,
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/marcekovam/Masters_thesis/blob/main/02-livebids.Rmd",
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"info": true
+});
+});
+</script>
+
+</body>
+
+</html>

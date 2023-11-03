@@ -1,0 +1,32 @@
+# (PART\*) Dáta {-}
+# Aukčné dáta
+
+[data](https://www.modelingonlineauctions.com/datasets)
+
+```{r}
+df <- read.csv("Xbox 3-day auctions.csv", header = TRUE, sep = ",")
+pander(head(df), style='rmarkdown')
+```
+
+```{r}
+pander(colSums(is.na(df)), style='rmarkdown')
+```
+
+```{r}
+df2 <- data.frame(auctions = length(unique(df$auctionid)),
+                  bidders = length(unique(df$bidder)),
+                  bids = nrow(df),
+                  bids_per_auction = nrow(df)/length(unique(df$auctionid)))
+pander(df2, style='rmarkdown')
+```
+
+```{r}
+plot_bidtime <- ggplot(df, aes(x = bidtime)) +
+  geom_histogram(breaks = seq(0, 3, by = 0.2), color = "black", fill = blue[1], 
+                 size = 0.001) +
+  theme_bw() + 
+  labs(x = "Čas ponúk [dni]",
+       y = "Absolútna početnosť") +
+  theme(legend.position = "none")
+plot_bidtime
+```

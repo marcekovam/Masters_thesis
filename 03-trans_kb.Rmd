@@ -1,0 +1,2 @@
+# (PART\*) Gaussovský proces {-}
+# Transformácia kosínovej bázy

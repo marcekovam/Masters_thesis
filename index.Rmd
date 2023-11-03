@@ -1,23 +1,29 @@
 --- 
-title: "Title"
+title: "Bayesovské modely aukcií"
 author: "Michaela Marčeková"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
 
 ```{r setup, include=FALSE}
-library("ggplot2")   
-library("bsamGP")
+library(ggplot2)   
+library(bsamGP)
+library(pander)   # na pekne tabulky
+library(dplyr)
 knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
                       warning = FALSE,
                       fig.align = 'center',
                       fig.height = 5,
                       fig.width = 8)
+# COLORS
+red <- rgb(0.89, 0.0, 0.13, 1)
+blue <- c(rgb(0.61, 0.87, 1.0, 1), rgb(0.0, 0.28, 0.67, 1))
+gold <- rgb(0.98, 0.8, 0.0, 1)
+olive <- rgb(0.55, 0.71, 0.0, 1)
+gray <- rgb(0.75, 0.75, 0.75, 1)
 ```
 
-# Introduction {-}
+# Úvod {-}
 
-[I'm an inline-style link](https://www.google.com)
-
-[Chapeter 1 link](#first-chapter)
+[Chapeter 1 link](#aukčné-dáta)

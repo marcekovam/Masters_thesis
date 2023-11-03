@@ -13,7 +13,7 @@ bookdown::gitbook:
       collapse: subsection
       scroll_highlight: true
       before: |
-        <li><a href="./">Above toc title</a></li>
+        <li><a href="./">Bayesovské modely aukcií</a></li>
       after: null
     toolbar:
         position: fixed   # static

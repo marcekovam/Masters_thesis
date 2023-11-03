@@ -1,0 +1,148 @@
+# Livebids
+
+`make.livebids` [code](https://www.modelingonlineauctions.com/code)
+
+```{r}
+####################################################################
+#######                                                      #######
+#######       Recover the livebids from the Proxybids        #######     
+#######                                                      #######
+####################################################################
+
+
+####################################################################
+####      find the bid increment for a given auction price      ####
+####################################################################
+
+## function bid.incr(price)
+bid.incr <- 
+       function(price) 
+           { bidint <- c(0,0.99,4.99,24.99,99.99,249.99,499.99,999.99,2499.99,4999.99)
+               ## interval of prices
+             inc <- c(0.05,0.25,0.5,1,2.5,5,10,25,50,100)
+               ## increments of price for particular interval
+             inc[findInterval(price,bidint)]
+           }
+
+############################################################
+##########            make livebids              ###########
+############################################################
+
+## function recover.livebids(bids,bidder,openbid,winningbid)
+## This function reconstructs the sequence of livebids by 
+## inputing the raw bids,bidder IDs and opening bid
+
+recover.livebids <- 
+       function(bids,bidder,openbid,winningbid)
+           { nbid <- length(bids)
+             if (nbid==1) { live <- openbid
+                            live
+                           }
+             else {
+                   if (nbid==2) {live <- numeric(nbid)
+                                 live[1] <- openbid
+                                 live[nbid] <- winningbid
+                                 live}
+
+                   else { live <- numeric(nbid)
+                          maxbid <- bids[1]
+                          live[1] <- openbid
+                          live[nbid] <- winningbid
+                          currentprice <- bids[1]
+                          maxbidder <- bidder[1]
+                          for (i in 2:(nbid-1)) 
+                                { newbid <- bids[i]
+                                  newbidder <- bidder[i]
+                                  if (newbid > maxbid) { if (!(identical(newbidder,maxbidder))) 
+                                                             { incr <- bid.incr(maxbid)
+                                                               if (newbid < maxbid+incr)  currentprice <- newbid
+                                                               else currentprice <- maxbid+incr
+                                                               maxbid <- newbid         
+                                                               maxbidder <- newbidder
+                                                              } 
+                                                         else {maxbid <- newbid 
+                                                               maxbidder <- maxbidder
+                                                               }
+                                                       }
+                                  else {if (newbid < maxbid) { incr <- bid.incr(newbid)
+                                                               if (newbid+incr>=maxbid) currentprice <- maxbid
+                                                               else currentprice <- newbid+incr
+                                                               maxbid <- maxbid
+                                                               maxbidder <- maxbidder
+                                                              }
+                                         else { if (!(identical(newbidder,maxbidder))) 
+                                                                            {currentprice <- maxbid
+                                                                             maxbid <- maxbid
+                                                                             maxbidder <- maxbidder
+                                                                            }
+                                                else {currentprice <- currentprice
+                                                      maxbid <- maxbid
+                                                      maxbidder <- maxbidder
+                                                      }                                              
+                                              }
+                                        }
+                                 live[i] <- currentprice
+                               }
+                         live
+                        }
+                  }
+             }
+```
+
+```{r}
+current_price <- list()
+for (au in unique(df$auctionid)){
+  current_price[[as.character(au)]] <- 
+    recover.livebids(df$bid[which(df$auctionid == au)],
+                   df$bidder[which(df$auctionid == au)],
+                   unique(df$openbid[which(df$auctionid == au)]),
+                   unique(df$price[which(df$auctionid == au)]))
+}
+df_current_price <- data.frame(
+  time = df$bidtime,
+  price = unname(unlist(current_price)),
+  auctionid = unname(unlist(sapply(names(current_price), 
+                                   \(k){rep(k, times = length(current_price[[k]]))})))
+)
+pander(head(df_current_price), style='rmarkdown')
+```
+
+```{r}
+df_current_price_extend <- df_current_price
+for (k in unique(df_current_price$auctionid)){
+  df_current_price_extend <- add_row(df_current_price_extend, 
+                                  time = 0,
+                                  price = min(df_current_price$price[which(df$auctionid == k)]),
+                                  auctionid = k,
+                                  .before = min(which(df_current_price_extend$auctionid == k)))
+  df_current_price_extend <- add_row(df_current_price_extend, 
+                                  time = 3,
+                                  price = max(df_current_price$price[which(df$auctionid == k)]),
+                                  auctionid = k,
+                                  .after = max(which(df_current_price_extend$auctionid == k)))
+}
+plot_auction <- ggplot() +
+  geom_step(data = df_current_price_extend[which(df_current_price_extend$auctionid %in% unique(df_current_price_extend$auctionid)[c(4, 5, 11)]), ], 
+            aes(x = time, y = price, color = as.factor(auctionid))) +
+  geom_point(data = df[which(df$auctionid %in% unique(df$auctionid)[c(4, 5, 11)]), ], aes(x = bidtime, y = bid, color = as.factor(auctionid)), 
+             size = 0.7) + 
+  theme_bw() + 
+  labs(x = "Čas ponúk [dni]",
+       y = "Ponuky [USD]") +
+  theme(legend.position = "none") +
+  scale_color_manual(values = c(gold, blue[2], olive))
+plot_auction
+```
+
+```{r}
+plot_auction <- ggplot() +
+  geom_step(data = df_current_price_extend, 
+            aes(x = time, y = price, color = as.factor(auctionid))) +
+  geom_point(data = df, aes(x = bidtime, y = bid, color = as.factor(auctionid)), 
+             size = 0.7) + 
+  theme_bw() + 
+  labs(x = "Čas ponúk [dni]",
+       y = "Ponuky [USD]") +
+  theme(legend.position = "none")
+plot_auction
+```

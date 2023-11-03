@@ -1,8 +1,7 @@
-fig:name
-first-chapter
-second-chapter
-third-chapter
-fourth-chapter
+aukčné-dáta
+livebids
+transformácia-kosínovej-bázy
+príklady-gaussovských-procesov
 section
 section-1
 subsection

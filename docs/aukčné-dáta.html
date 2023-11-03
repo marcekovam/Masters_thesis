@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Kapitola 1 Aukčné dáta | Bayesovské modely aukcií</title>
+  <meta name="description" content="Kapitola 1 Aukčné dáta | Bayesovské modely aukcií" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Kapitola 1 Aukčné dáta | Bayesovské modely aukcií" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Kapitola 1 Aukčné dáta | Bayesovské modely aukcií" />
+  
+  
+  
+
+<meta name="author" content="Michaela Marčeková" />
+
+
+<meta name="date" content="2023-11-03" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="livebids.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/codefolding-lua-1.1/codefolding-lua.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="book.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Bayesovské modely aukcií</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Úvod</a></li>
+<li class="part"><span><b>Dáta</b></span></li>
+<li class="chapter" data-level="1" data-path="aukčné-dáta.html"><a href="aukčné-dáta.html"><i class="fa fa-check"></i><b>1</b> Aukčné dáta</a></li>
+<li class="chapter" data-level="2" data-path="livebids.html"><a href="livebids.html"><i class="fa fa-check"></i><b>2</b> Livebids</a></li>
+<li class="part"><span><b>Gaussovský proces</b></span></li>
+<li class="chapter" data-level="3" data-path="transformácia-kosínovej-bázy.html"><a href="transformácia-kosínovej-bázy.html"><i class="fa fa-check"></i><b>3</b> Transformácia kosínovej bázy</a></li>
+<li class="chapter" data-level="4" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html"><i class="fa fa-check"></i><b>4</b> Príklady gaussovských procesov</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#section"><i class="fa fa-check"></i><b>4.1</b> Section</a></li>
+<li class="chapter" data-level="4.2" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#section-1"><i class="fa fa-check"></i><b>4.2</b> Section</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#subsection"><i class="fa fa-check"></i><b>4.2.1</b> Subsection</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="príklady-gaussovských-procesov.html"><a href="príklady-gaussovských-procesov.html#section-2"><i class="fa fa-check"></i><b>4.3</b> Section</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Bayesovské modely aukcií</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="aukčné-dáta" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Kapitola 1</span> Aukčné dáta<a href="aukčné-dáta.html#aukčné-dáta" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><a href="https://www.modelingonlineauctions.com/datasets">data</a></p>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="aukčné-dáta.html#cb1-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Xbox 3-day auctions.csv&quot;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb1-2"><a href="aukčné-dáta.html#cb1-2" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">head</span>(df), <span class="at">style=</span><span class="st">&#39;rmarkdown&#39;</span>)</span></code></pre></div>
+</details>
+<table style="width:100%;">
+<colgroup>
+<col width="15%" />
+<col width="9%" />
+<col width="12%" />
+<col width="22%" />
+<col width="16%" />
+<col width="12%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">auctionid</th>
+<th align="center">bid</th>
+<th align="center">bidtime</th>
+<th align="center">bidder</th>
+<th align="center">bidderrate</th>
+<th align="center">openbid</th>
+<th align="center">price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8.213e+09</td>
+<td align="center">95</td>
+<td align="center">2.927</td>
+<td align="center">jake7870</td>
+<td align="center">0</td>
+<td align="center">95</td>
+<td align="center">117.5</td>
+</tr>
+<tr class="even">
+<td align="center">8.213e+09</td>
+<td align="center">115</td>
+<td align="center">2.943</td>
+<td align="center">davidbresler2</td>
+<td align="center">1</td>
+<td align="center">95</td>
+<td align="center">117.5</td>
+</tr>
+<tr class="odd">
+<td align="center">8.213e+09</td>
+<td align="center">100</td>
+<td align="center">2.951</td>
+<td align="center">gladimacowgirl</td>
+<td align="center">58</td>
+<td align="center">95</td>
+<td align="center">117.5</td>
+</tr>
+<tr class="even">
+<td align="center">8.213e+09</td>
+<td align="center">117.5</td>
+<td align="center">2.999</td>
+<td align="center">daysrus</td>
+<td align="center">10</td>
+<td align="center">95</td>
+<td align="center">117.5</td>
+</tr>
+<tr class="odd">
+<td align="center">8.213e+09</td>
+<td align="center">2</td>
+<td align="center">0.06527</td>
+<td align="center">donnie4814</td>
+<td align="center">5</td>
+<td align="center">1</td>
+<td align="center">120</td>
+</tr>
+<tr class="even">
+<td align="center">8.213e+09</td>
+<td align="center">15.25</td>
+<td align="center">0.1232</td>
+<td align="center">myreeceyboy</td>
+<td align="center">52</td>
+<td align="center">1</td>
+<td align="center">120</td>
+</tr>
+</tbody>
+</table>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="aukčné-dáta.html#cb2-1" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">colSums</span>(<span class="fu">is.na</span>(df)), <span class="at">style=</span><span class="st">&#39;rmarkdown&#39;</span>)</span></code></pre></div>
+</details>
+<table style="width:97%;">
+<colgroup>
+<col width="16%" />
+<col width="8%" />
+<col width="13%" />
+<col width="12%" />
+<col width="18%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">auctionid</th>
+<th align="center">bid</th>
+<th align="center">bidtime</th>
+<th align="center">bidder</th>
+<th align="center">bidderrate</th>
+<th align="center">openbid</th>
+<th align="center">price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="aukčné-dáta.html#cb3-1" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">auctions =</span> <span class="fu">length</span>(<span class="fu">unique</span>(df<span class="sc">$</span>auctionid)),</span>
+<span id="cb3-2"><a href="aukčné-dáta.html#cb3-2" tabindex="-1"></a>                  <span class="at">bidders =</span> <span class="fu">length</span>(<span class="fu">unique</span>(df<span class="sc">$</span>bidder)),</span>
+<span id="cb3-3"><a href="aukčné-dáta.html#cb3-3" tabindex="-1"></a>                  <span class="at">bids =</span> <span class="fu">nrow</span>(df),</span>
+<span id="cb3-4"><a href="aukčné-dáta.html#cb3-4" tabindex="-1"></a>                  <span class="at">bids_per_auction =</span> <span class="fu">nrow</span>(df)<span class="sc">/</span><span class="fu">length</span>(<span class="fu">unique</span>(df<span class="sc">$</span>auctionid)))</span>
+<span id="cb3-5"><a href="aukčné-dáta.html#cb3-5" tabindex="-1"></a><span class="fu">pander</span>(df2, <span class="at">style=</span><span class="st">&#39;rmarkdown&#39;</span>)</span></code></pre></div>
+</details>
+<table>
+<thead>
+<tr class="header">
+<th align="center">auctions</th>
+<th align="center">bidders</th>
+<th align="center">bids</th>
+<th align="center">bids_per_auction</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">35</td>
+<td align="center">242</td>
+<td align="center">557</td>
+<td align="center">15.91</td>
+</tr>
+</tbody>
+</table>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="aukčné-dáta.html#cb4-1" tabindex="-1"></a>plot_bidtime <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x =</span> bidtime)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="aukčné-dáta.html#cb4-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="at">by =</span> <span class="fl">0.2</span>), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> blue[<span class="dv">1</span>], </span>
+<span id="cb4-3"><a href="aukčné-dáta.html#cb4-3" tabindex="-1"></a>                 <span class="at">size =</span> <span class="fl">0.001</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="aukčné-dáta.html#cb4-4" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb4-5"><a href="aukčné-dáta.html#cb4-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Čas ponúk [dni]&quot;</span>,</span>
+<span id="cb4-6"><a href="aukčné-dáta.html#cb4-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Absolútna početnosť&quot;</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="aukčné-dáta.html#cb4-7" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb4-8"><a href="aukčné-dáta.html#cb4-8" tabindex="-1"></a>plot_bidtime</span></code></pre></div>
+</details>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-4-1.png" width="768" style="display: block; margin: auto;" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="livebids.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": null,
+"fontsettings": null,
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/marcekovam/Masters_thesis/blob/main/01-aukcne_data.Rmd",
+"text": null
+},
+"download": null,
+"search": false,
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"toolbar": {
+"position": "fixed"
+},
+"info": true
+});
+});
+</script>
+
+</body>
+
+</html>
