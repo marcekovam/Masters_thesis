@@ -1,0 +1,25 @@
+bookdown::gitbook:
+  highlight: haddock   # pygments, monochrome, haddock
+  #clean: false
+  includes:
+    in_header: header.html
+  css: style.css
+  code_folding: hide
+  fig_caption: true
+  number_sections: true
+  split_by: chapter
+  config:
+    toc:
+      collapse: subsection
+      scroll_highlight: true
+      before: |
+        <li><a href="./">Above toc title</a></li>
+      after: null
+    toolbar:
+        position: fixed   # static
+    search: false
+    edit : null
+    download: false
+    fontsettings: null
+    sharing: null
+    info: true

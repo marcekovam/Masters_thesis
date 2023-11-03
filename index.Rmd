@@ -1,0 +1,23 @@
+--- 
+title: "Title"
+author: "Michaela Marčeková"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+
+```{r setup, include=FALSE}
+library("ggplot2")   
+library("bsamGP")
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      fig.align = 'center',
+                      fig.height = 5,
+                      fig.width = 8)
+```
+
+# Introduction {-}
+
+[I'm an inline-style link](https://www.google.com)
+
+[Chapeter 1 link](#first-chapter)
