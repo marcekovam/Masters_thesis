@@ -1,3 +1,4 @@
+fig:unnamed-chunk-9
 aukčné-dáta
 livebids
 transformácia-kosínovej-bázy
@@ -6,3 +7,6 @@ section
 section-1
 subsection
 section-2
+vplyv-hyperparametrov
+priebeh-aukcií
+model-s-vyvolávaciou-cenou

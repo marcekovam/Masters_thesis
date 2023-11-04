@@ -1,0 +1,21 @@
+# Priebeh aukcií
+
+## Model s vyvolávaciou cenou
+
+```{r}
+df <- data.frame(auctionid = df_current_price$auctionid,
+                 livebid = df_current_price$price, 
+                 bidtime = df_current_price$time,
+                 openbid = df$openbid)
+df <- df |> mutate(
+  day1 = as.numeric(ceiling(df$bidtime) == 1),
+  day2 = as.numeric(ceiling(df$bidtime) == 2),
+  day3 = as.numeric(ceiling(df$bidtime) == 3),
+)
+df <- df |> mutate(
+  day1i = day1*openbid,
+  day2i = day2*openbid,
+  day3i = day3*openbid,
+)
+pander(head(df), style = "rmarkdown")
+```

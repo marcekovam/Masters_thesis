@@ -20,4 +20,6 @@ rmd_files: # defines the .Rmd files to be included for each output format
          "01-aukcne_data.Rmd", 
          "02-livebids.Rmd", 
          "03-trans_kb.Rmd",
-         "04-prik_gauss.Rmd"]
+         "04-prik_gauss.Rmd",
+         "05-vplyv_hparam.Rmd",
+         "06-priebeh_aukcii.Rmd"]

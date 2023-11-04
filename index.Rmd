@@ -10,6 +10,7 @@ library(ggplot2)
 library(bsamGP)
 library(pander)   # na pekne tabulky
 library(dplyr)
+library(patchwork) # na obrazky vedla seba
 knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
                       warning = FALSE,

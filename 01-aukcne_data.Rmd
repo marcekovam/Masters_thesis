@@ -30,3 +30,4 @@ plot_bidtime <- ggplot(df, aes(x = bidtime)) +
   theme(legend.position = "none")
 plot_bidtime
 ```
+

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Kapitola 4 Príklady gaussovských procesov | Bayesovské modely aukcií</title>
-  <meta name="description" content="Kapitola 4 Príklady gaussovských procesov | Bayesovské modely aukcií" />
+  <title>Kapitola 6 Priebeh aukcií | Bayesovské modely aukcií</title>
+  <meta name="description" content="Kapitola 6 Priebeh aukcií | Bayesovské modely aukcií" />
   <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Kapitola 4 Príklady gaussovských procesov | Bayesovské modely aukcií" />
+  <meta property="og:title" content="Kapitola 6 Priebeh aukcií | Bayesovské modely aukcií" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Kapitola 4 Príklady gaussovských procesov | Bayesovské modely aukcií" />
+  <meta name="twitter:title" content="Kapitola 6 Priebeh aukcií | Bayesovské modely aukcií" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="transformácia-kosínovej-bázy.html"/>
-<link rel="next" href="vplyv-hyperparametrov.html"/>
+<link rel="prev" href="vplyv-hyperparametrov.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -174,32 +174,158 @@ code span.wa { color: #008000; font-weight: bold; } /* Warning */
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="príklady-gaussovských-procesov" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Kapitola 4</span> Príklady gaussovských procesov<a href="príklady-gaussovských-procesov.html#príklady-gaussovských-procesov" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="section" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> Section<a href="príklady-gaussovských-procesov.html#section" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-</div>
-<div id="section-1" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Section<a href="príklady-gaussovských-procesov.html#section-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="subsection" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Subsection<a href="príklady-gaussovských-procesov.html#subsection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-</div>
-</div>
-<div id="section-2" class="section level2 hasAnchor" number="4.3">
-<h2><span class="header-section-number">4.3</span> Section<a href="príklady-gaussovských-procesov.html#section-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="priebeh-aukcií" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Kapitola 6</span> Priebeh aukcií<a href="priebeh-aukcií.html#priebeh-aukcií" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="model-s-vyvolávaciou-cenou" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Model s vyvolávaciou cenou<a href="priebeh-aukcií.html#model-s-vyvolávaciou-cenou" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<details class=chunk-details><summary class=chunk-summary><span class=chunk-summary-text>Code</span></summary>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="priebeh-aukcií.html#cb11-1" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">auctionid =</span> df_current_price<span class="sc">$</span>auctionid,</span>
+<span id="cb11-2"><a href="priebeh-aukcií.html#cb11-2" tabindex="-1"></a>                 <span class="at">livebid =</span> df_current_price<span class="sc">$</span>price, </span>
+<span id="cb11-3"><a href="priebeh-aukcií.html#cb11-3" tabindex="-1"></a>                 <span class="at">bidtime =</span> df_current_price<span class="sc">$</span>time,</span>
+<span id="cb11-4"><a href="priebeh-aukcií.html#cb11-4" tabindex="-1"></a>                 <span class="at">openbid =</span> df<span class="sc">$</span>openbid)</span>
+<span id="cb11-5"><a href="priebeh-aukcií.html#cb11-5" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb11-6"><a href="priebeh-aukcií.html#cb11-6" tabindex="-1"></a>  <span class="at">day1 =</span> <span class="fu">as.numeric</span>(<span class="fu">ceiling</span>(df<span class="sc">$</span>bidtime) <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb11-7"><a href="priebeh-aukcií.html#cb11-7" tabindex="-1"></a>  <span class="at">day2 =</span> <span class="fu">as.numeric</span>(<span class="fu">ceiling</span>(df<span class="sc">$</span>bidtime) <span class="sc">==</span> <span class="dv">2</span>),</span>
+<span id="cb11-8"><a href="priebeh-aukcií.html#cb11-8" tabindex="-1"></a>  <span class="at">day3 =</span> <span class="fu">as.numeric</span>(<span class="fu">ceiling</span>(df<span class="sc">$</span>bidtime) <span class="sc">==</span> <span class="dv">3</span>),</span>
+<span id="cb11-9"><a href="priebeh-aukcií.html#cb11-9" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="priebeh-aukcií.html#cb11-10" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb11-11"><a href="priebeh-aukcií.html#cb11-11" tabindex="-1"></a>  <span class="at">day1i =</span> day1<span class="sc">*</span>openbid,</span>
+<span id="cb11-12"><a href="priebeh-aukcií.html#cb11-12" tabindex="-1"></a>  <span class="at">day2i =</span> day2<span class="sc">*</span>openbid,</span>
+<span id="cb11-13"><a href="priebeh-aukcií.html#cb11-13" tabindex="-1"></a>  <span class="at">day3i =</span> day3<span class="sc">*</span>openbid,</span>
+<span id="cb11-14"><a href="priebeh-aukcií.html#cb11-14" tabindex="-1"></a>)</span>
+<span id="cb11-15"><a href="priebeh-aukcií.html#cb11-15" tabindex="-1"></a><span class="fu">pander</span>(<span class="fu">head</span>(df), <span class="at">style =</span> <span class="st">&quot;rmarkdown&quot;</span>)</span></code></pre></div>
+</details>
+<table>
+<caption>Table continues below</caption>
+<colgroup>
+<col width="18%" />
+<col width="14%" />
+<col width="14%" />
+<col width="14%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">auctionid</th>
+<th align="center">livebid</th>
+<th align="center">bidtime</th>
+<th align="center">openbid</th>
+<th align="center">day1</th>
+<th align="center">day2</th>
+<th align="center">day3</th>
+<th align="center">day1i</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">8213034705</td>
+<td align="center">95</td>
+<td align="center">2.927</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">8213034705</td>
+<td align="center">96</td>
+<td align="center">2.943</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">8213034705</td>
+<td align="center">102.5</td>
+<td align="center">2.951</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">8213034705</td>
+<td align="center">117.5</td>
+<td align="center">2.999</td>
+<td align="center">95</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">8213060420</td>
+<td align="center">1</td>
+<td align="center">0.06527</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="center">8213060420</td>
+<td align="center">2.25</td>
+<td align="center">0.1232</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="center">day2i</th>
+<th align="center">day3i</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">95</td>
+</tr>
+<tr class="even">
+<td align="center">0</td>
+<td align="center">95</td>
+</tr>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">95</td>
+</tr>
+<tr class="even">
+<td align="center">0</td>
+<td align="center">95</td>
+</tr>
+<tr class="odd">
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
-
-
-
             </section>
 
           </div>
         </div>
       </div>
-<a href="transformácia-kosínovej-bázy.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="vplyv-hyperparametrov.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="vplyv-hyperparametrov.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -221,7 +347,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/marcekovam/Masters_thesis/blob/main/04-prik_gauss.Rmd",
+"link": "https://github.com/marcekovam/Masters_thesis/blob/main/06-priebeh_aukcii.Rmd",
 "text": null
 },
 "download": null,
